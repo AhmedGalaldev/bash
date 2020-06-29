@@ -1,0 +1,22 @@
+﻿Automating wordpress installation
+We want to automate the wordpress installation. The wordpress is Content Management System. It contains mainly 2 components, the web application and backend db
+We want to automatically create the database, and the applicaion.
+The system will be divided into 2 modules and one main shell script
+1-DB creation module
+    1-Create a mysql database
+    2-Create a user
+    3-Grant the user full privileges on that database
+2-Wordpress app creation module
+    1-downlod the latest wordpress version
+    2-extract the wordpress file to a location under your DocumentRoot/dir
+    3-DocumentRoot is your web server document root usuall /var/www/html
+    4-dir will be  directory you will read from the user
+3-The main shell script
+    1-Call the 1st script
+    2-Call the 2nd script
+    3-create a backup entry from this db every day @ 12 in a directory /backup/db/backfilename
+    ** The backupfilename will be the same as date of backup
+    4-create a backup entry from wordpress directory (DocumentRoot/dir) every day @ 12 in a directory /backup/wpsite/backfilename
+    ** The backupfilename will be the same as date of backup
+Notes:
+Consider: Dividing codes into functions, document every exit codes, checks and data validation

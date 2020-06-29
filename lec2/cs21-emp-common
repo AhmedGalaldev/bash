@@ -1,0 +1,6 @@
+function checkID {
+	ID=$1
+	FNAME=$2
+        LINE=$(grep "^$ID:" ${FNAME} | wc -l )
+        return $LINE
+}

@@ -1,0 +1,70 @@
+#!/bin/bash
+########### Script accepts ID, and prints the details and sum
+##Exit code:
+##	0: Normal termination
+##	1: Invalid paramters
+##	2: ID is not an integer
+##	3: ID is not in master file
+##	4: ID has no details
+
+if [ ! $# -eq 1 ]
+then
+	echo "Invalid paramters"
+	echo "Usage: ./sc15 ID"
+	exit 1
+fi
+
+### Check if id is an integer
+ID=$1
+temp="^[0-9]+$"
+if ! [[ $ID =~ $temp ]]
+then
+	echo "Invalid id format, must be an integer"
+	exit 2
+fi
+### Check if id in the master file
+# LINE=$(grep "^$ID:" db_stinfo | wc -l)
+# if [ $LINE -eq 0 ]
+# then
+# 	echo "ID $ID is not exist in the db_info"
+# 	exit 3
+# fi
+# #### Read the info, and parse it
+declare -A DBSETTINGS
+
+
+
+################ Only changes go here
+DBSETTINGS["DBHOST"]="localhost"
+DBSETTINGS["DBUSER"]="root"
+DBSETTINGS["DBPASS"]="agh149agh"
+DBSETTINGS["DBNAME"]="itidb"
+DBSETTINGS["TABLENAME"]="STINFO"
+
+
+query=($(mysql -u root -pagh149agh -NB -e "select * from itidb.STINFO where id = $ID"))
+#NAME=$(sed -n "/^$ID:/p" db_stinfo | cut -d":" -f 2)
+
+#EMAIL=$(sed -n "/^$ID:/p" db_stinfo | cut -d":" -f 3)
+echo ${query[1]}
+echo ${query[2]}
+mysql -u ${DBSETTINGS["DBUSER"]} -p${DBSETTINGS["DBPASS"]} -NB -e "select * from ${DBSETTINGS["DBNAME"]}.PRICETABLE  where id =$ID " | awk 'BEGIN { C=0 } { C=C+$2 } END { print "the sum is " C}'
+
+
+
+### REad the details
+#LINE=$(grep "^$ID:" db_details | wc -l)
+# if [ $LINE -eq 0 ]
+# then
+# 	echo "The user with id $ID has no details!!"
+# 	exit 4
+# fi
+# LINES=$(sed -n "/^$ID:/p" db_details | cut -d":" -f 2)
+# for l in $LINES
+# do
+# 	echo "$ID paid $l"
+# 	s=$[l+s]
+# done
+# echo "Total for $ID = $s"
+
+# exit 0

@@ -1,0 +1,55 @@
+#!/bin/bash
+### Accept ID, cost and insert into db_details
+##Exit codes
+##	0:	Normal termination
+##	1:	Invalid paramters
+##	2:	Invalid id, must be integer
+##	3:	Invalid price, mustbe integer
+##	4:	ID is not found in the master
+
+
+if [ !  $#-eq 2 ]
+then
+	echo "Invalid paramters"
+	echo "Usage: ./sc14 ID Price"
+	exit 1
+fi
+
+########## Check if id, and price are integers
+temp1="^[0-9]+$"
+ID=$1
+PRICE=$2
+if ! [[ $ID =~ $temp1 ]]
+then
+	echo "Invalid ID, must be an integer"
+	exit 2
+fi
+if ! [[ $PRICE =~ $temp1 ]]
+then
+        echo "Invalid price, must be an integer"
+        exit 3
+fi
+
+########### Check if ID is exists in db_info or no
+# LINE=$(grep "^$ID:" db_stinfo | wc -l)
+# if [ $LINE -eq 0 ]
+# then
+# 	echo "Error: db_stinfo has no ID, can not insert"
+# 	exit 4
+# fi
+#echo "$ID:$PRICE" >> db_details
+#echo "$ID inserted into db_details"
+#exit 0
+
+declare -A DBSETTINGS
+
+
+
+################ Only changes go here
+DBSETTINGS["DBHOST"]="localhost"
+DBSETTINGS["DBUSER"]="root"
+DBSETTINGS["DBPASS"]="agh149agh"
+DBSETTINGS["DBNAME"]="itidb"
+DBSETTINGS["TABLENAME"]="PRICETABLE"
+#########################################################
+mysql -u ${DBSETTINGS["DBUSER"]} -p${DBSETTINGS["DBPASS"]} -e "INSERT INTO ${DBSETTINGS["DBNAME"]}.${DBSETTINGS["TABLENAME"]}  VALUES ('$ID', '${PRICE}')"

@@ -1,0 +1,20 @@
+#!/bin/bash
+
+declare -A DBSETTINGS
+
+
+
+################ Only changes go here
+DBSETTINGS["DBHOST"]="localhost"
+DBSETTINGS["DBUSER"]="root"
+DBSETTINGS["DBPASS"]="agh149agh"
+DBSETTINGS["DBNAME"]="itidb"
+DBSETTINGS["TABLENAME"]="STINFO"
+#########################################################
+
+
+#mysql -u ${DBSETTINGS["DBUSER"]} -p${DBSETTINGS["DBPASS"]} -e INSERT INTO ${DBSETTINGS["TABLENAME"]} (`id `, `name`, `email`) VALUES ("$ID", "$NAME", "$EMAIL")
+#mysql -u ${DBSETTINGS["DBUSER"]} -p${DBSETTINGS["DBPASS"]} -e "select * from ${DBSETTINGS["DBNAME"]}.${DBSETTINGS["TABLENAME"]}"
+mysql -u ${DBSETTINGS["DBUSER"]} -p${DBSETTINGS["DBPASS"]} -e "select name from ${DBSETTINGS["DBNAME"]}.${DBSETTINGS["TABLENAME"]}
+ where id= 1"
+

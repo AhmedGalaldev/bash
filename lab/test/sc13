@@ -1,0 +1,37 @@
+#!/bin/bash
+### Script accepts id,name,email, and insert it into file db_stinfo
+###Exit codes:
+##	0: normal
+##	1: Invalid paramters
+##	2: ID is not integer
+##	3: ID is already exists
+if [ ! $# -eq 3 ]
+then
+	echo "Invalid paramters"
+	echo "Usage: ./sc12 id name email"
+	echo "Note: If name contains spaces, include it into \""
+	exit 1
+fi
+ID=$1
+NAME=$2
+EMAIL=$3
+#### Check if ID is integer
+temp1="^[0-9]+$"
+if ! [[ $ID =~ $temp1 ]] 
+then
+	echo "Invalid ID format, must be integer"
+	exit 2
+fi
+############## Must check for email address :-)
+###################################################
+## Check the DB against this ID
+result=$(mysql -u non -pPASS -NB -e "select * from bash.stinfo where id = $ID")
+if ! [ -z $result ]
+then
+	echo "this ID exits in the DB"
+	exit 3
+fi
+## insert in the DB
+mysql -u non -pPASS  -e "insert into bash.stinfo values($ID, '$NAME', '$EMAIL')"
+echo "$ID is inserted"
+exit 0
